@@ -6,15 +6,22 @@
     </p>
 </nav>
 
-<header style= "font-size:200%">
-    <strong> Log in </strong>
+<header style= "font-size:100%">
+    <h1><strong> Log in </strong></h1>
     <hr align="left" style="border: solid 0.5px gray; width: 50%;">
 </header>
 
 <form>
     <ol style="list-style-type:none;">
-        <li><label for=username>Username:</label><input id=username></li>
-        <li><label for=password>Password:</label><input id=password></li>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" autofocus><br><br>
+
+        <!-- <li><label for=username>Username:</label><input id=username></li> -->
+
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password"><br><br>
+
         <li><button>Log in</button></li>
     </ol>
 </form>
