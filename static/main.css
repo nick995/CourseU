@@ -1,0 +1,38 @@
+<<<<<<< HEAD
+=======
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap');
+
+
+* {
+    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.25;
+    font-size: 125%;
+}
+
+/* Set the line-height to 1.5× inside tables. */
+table{
+    color: red;
+    line-height: 1.5;
+}
+
+/*ID*/
+#navigation{
+    background: darkgrey;
+    line-height: 1.25;
+    font-size: 125%;
+}
+
+.bold{
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+}
+
+#pageTitle{
+    font-size: 150%;
+}
+
+/* #loginFont{
+    font-size: 125%;
+} */
+>>>>>>> ec56b3b3ff9ec091a96c921d18f2c968598a482e
