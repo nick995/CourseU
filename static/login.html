@@ -9,41 +9,36 @@
   <title>Assignment 1 (HTML) - CS 3550</title>
   <link rel="icon" href="/static/favicon.ico" type="image/icon type">
 </head>
+
+
 <body>
+    <header class="navigation"> 
+        <h1 class="bold">CS 3550 </h1>
+        <a href="assignments.html" title="This link goes Assignments page">Assignments</a>
+        <a href="profile.html" title="This link goes profile page">Profile</a>
+    </header>
 
+    <header>
+        <h1 class="pageTitle">Log in </h1>
+    </header>
 
-<header> 
-    <div class="action"></div>
-    <p style="font-size: 200%;">
-    <strong> CS 3550 </strong>
-    <a href="assignments.html" title="This link goes Assignments page">Assignments</a>
-    <a style="float: right;" href="profile.html" title="This link goes profile page">Profile</a>
-    </p>
-</header>
+    <form class="loginForm">
+        <ol>
+            <li>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" autofocus><br><br>
+            </li>
 
-<header style= "font-size:100%">
-    <h1><strong> Log in </strong></h1>
-    <hr align="left" style="border: solid 0.5px gray; width: 50%;">
-</header>
-
-<form class="loginForm">
-    <ol style="list-style-type:none;">
-        <li>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" autofocus><br><br>
-        </li>
-
-        <li>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br><br>
-        </li>
-        
-        <li>
-        <label for="login"></label>
-        <button name = "login" onclick="location.href='profile.html'" type="button">Log in</button>
-        </li>
-    </ol>
-</form>
-
+            <li>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br><br>
+            </li>
+            
+            <li>
+            <label for="login"></label>
+            <button name = "login" onclick="location.href='profile.html'" type="button">Log in</button>
+            </li>
+        </ol>
+    </form>
 </body>
 </html>

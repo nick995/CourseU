@@ -10,9 +10,7 @@
 
 /* Set the line-height to 1.5× inside tables. */
 .table{
-    color: red;
     line-height: 1.5;
-
 }
 
 .bold{
@@ -21,10 +19,11 @@
 }
 
 /*ID*/
-#navigation{
-    background: darkgrey;
+.navigation{
     line-height: 1.25;
     font-size: 125%;
+    background-color: rgb(221, 221, 221);
+    box-shadow: 0 0 5px gray;
 }
 
 .src{
@@ -33,11 +32,38 @@
 
 .pageTitle{
     font-size: 150%;
+    border-bottom: solid;
+    border-color: rgb(221, 221, 221);
 }
 
 .loginForm{
     font-size: 125%;
 }
-/* #loginFont{
-    font-size: 125%;
+
+.actionCard{
+    background-color: rgb(177, 195, 222);
+    border: 2px solid rgb(32, 74, 135)
+}
+
+/* Make sure there are 3rem of whitespace between 
+   the page title and the navigation banner. */
+.whiteSpace3rem{
+    white-space: 3rem;
+}
+
+/*implement hover to 'a'*/
+a:hover{
+    color: red;
+    text-decoration: underline;
+}
+
+/* 
+Make table columns that contain numbers right-aligned. */
+.alnright{
+    text-align: right;
+}
+
+/* .flex-container{
+    display: flex;
+    justify-content: center;
 } */
