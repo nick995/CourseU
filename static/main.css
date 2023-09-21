@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,500;0,700;1,500&display=swap');
 
 * {
     font-family: 'IBM Plex Mono', monospace;
     font-family: 'IBM Plex Sans', sans-serif;
+    
     line-height: 1.25;
     fallback: initial;
 }
@@ -51,6 +51,12 @@
     white-space: 3rem;
 }
 
+.nav_title{
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
 /*implement hover to 'a'*/
 a:hover{
     color: red;
@@ -61,6 +67,17 @@ a:hover{
 Make table columns that contain numbers right-aligned. */
 .alnright{
     text-align: right;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid greenyellow;
+}
+
+.item{
+    margin-bottom: 1rem;   
+    border: 1px solid red;
 }
 
 /* .flex-container{
