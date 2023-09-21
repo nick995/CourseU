@@ -5,12 +5,13 @@
     font-family: 'IBM Plex Mono', monospace;
     font-family: 'IBM Plex Sans', sans-serif;
     line-height: 1.25;
-    fallback: initial;
+    margin-bottom: 1rem;    
 }
 
 /* Set the line-height to 1.5× inside tables. */
 .table{
     line-height: 1.5;
+    width: 100%;
 }
 
 .bold{
@@ -18,12 +19,12 @@
     font-weight: bold;
 }
 
-/*ID*/
 .navigation{
     line-height: 1.25;
     font-size: 125%;
     background-color: rgb(221, 221, 221);
     box-shadow: 0 0 5px gray;
+    margin-bottom: 2rem;
 }
 
 .src{
@@ -61,6 +62,10 @@ a:hover{
 Make table columns that contain numbers right-aligned. */
 .alnright{
     text-align: right;
+}
+
+.whitespace1rem{
+    white-space: 1rem;
 }
 
 /* .flex-container{
