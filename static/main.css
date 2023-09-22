@@ -3,7 +3,6 @@
 * {
     font-family: 'IBM Plex Mono', monospace;
     font-family: 'IBM Plex Sans', sans-serif;
-    
     line-height: 1.25;
     margin-bottom: 1rem;    
 }
@@ -48,9 +47,6 @@
 
 /* Make sure there are 3rem of whitespace between 
    the page title and the navigation banner. */
-.whiteSpace3rem{
-    white-space: 3rem;
-}
 
 .nav_title{
     gap: 1rem;
