@@ -1,15 +1,17 @@
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,500;0,700;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap');
+
 
 * {
     font-family: 'IBM Plex Mono', monospace;
     font-family: 'IBM Plex Sans', sans-serif;
     line-height: 1.25;
-    fallback: initial;
+    margin-bottom: 1rem;
 }
 
 /* Set the line-height to 1.5× inside tables. */
 .table{
     line-height: 1.5;
+    width: 100%;
 }
 
 .bold{
@@ -17,12 +19,12 @@
     font-weight: bold;
 }
 
-/*ID*/
 .navigation{
     line-height: 1.25;
     font-size: 125%;
     background-color: rgb(221, 221, 221);
     box-shadow: 0 0 5px gray;
+    margin-bottom: 2rem;
 }
 
 .src{
@@ -46,11 +48,8 @@
 
 /* Make sure there are 3rem of whitespace between 
    the page title and the navigation banner. */
-
-.nav_title{
-    gap: 1rem;
-    display: flex;
-    flex-direction: column;
+.whiteSpace3rem{
+    white-space: 3rem;
 }
 
 /*implement hover to 'a'*/
@@ -65,15 +64,36 @@ Make table columns that contain numbers right-aligned. */
     text-align: right;
 }
 
-.container{
-    display: flex;
-    flex-direction: column;
-    border: 2px solid greenyellow;
+.whitespace1rem{
+    white-space: 1rem;
 }
 
-.item{
-    margin-bottom: 1rem;   
-    border: 1px solid red;
+.rowContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    flex-grow: 1;
+    justify-content: center;
+
+}
+.rowBox{
+    display: flexbox;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 50%;
+    align-content: center;
+}
+
+.test{
+
+}
+
+.horizonAdj{
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 1rem;
 }
 
 /* .flex-container{

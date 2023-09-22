@@ -27,33 +27,35 @@
         All grades out of 100
     </p>
 
-<table>
-    <thead>
+<form>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th> <th> Submission</th> <th> Grade </th>
+            </tr>
+        </thead>
+
         <tr>
-            <th>Student</th> <th> Submission</th> <th> Grade </th>
+            <td>s1</td>
+            <td> <a role="button" href = "submissions.html" title="This link goes index"> Submission </a> </td>
+            <td><input type="number" title= "Assignment1 grade" name="Grade"> </td>
         </tr>
-    </thead>
 
-    <tr>
-        <td>s1</td>
-        <td> <a role="button" href = "submissions.html" title="This link goes index"> Submission </a> </td>
-        <td><input type="number" title= "Assignment1 grade" name="Grade"> </td>
-    </tr>
-
-    <tr>
-        <td>s2</td>
-        <td> <a role="button" href = "submissions.html" title="This link goes index"> Submission </a> </td>
-        <td><input type="number" title= "Assignment2 grade" name="Grade"> </td>
-    </tr>
-    
-    <tr>
-        <td>
-        <label for="submit"></label>
-        <button role= button name = "submit" onclick="location.href='submissions.html'" type="button">Submit</button>
-        </td>
-        <td><a href="assignments.html" title="This link goes assignment">Back to assignment</a></td>
-    </tr>
-</table>
+        <tr>
+            <td>s2</td>
+            <td> <a role="button" href = "submissions.html" title="This link goes index"> Submission </a> </td>
+            <td><input type="number" title= "Assignment2 grade" name="Grade"> </td>
+        </tr>
+        
+        <tr class="horizonAdj">
+            <td>
+            <label for="submit"></label>
+            <button role= button name = "submit" onclick="location.href='submissions.html'" type="button">Submit</button>
+            </td>
+            <td><a href="assignments.html" title="This link goes assignment">Back to assignment</a></td>
+        </tr>
+    </table>
+</form>
 
 </body>
 </html>

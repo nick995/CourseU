@@ -23,18 +23,19 @@
     </header>
 
     <form class="loginForm">
-        <p>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" autofocus><br><br>
+        <p class="rowContainer">
+            <label class="rowBox" for="username">Username:</label>
+            <input class="rowBox" type="text" id="username" name="username" autofocus><br><br>
         </p>
-        <p>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password"><br><br>
+        <p class="rowContainer">
+            <label class="rowBox" for="password">Password:</label>
+            <input class="rowBox" type="password" id="password" name="password"><br><br>
         </p>
-
-        <p>
+        
+        <!-- is it okay? -->
+        <p class="rowContainer">
             <label for="login"></label>
-            <button name = "login" onclick="location.href='profile.html'" type="button">Log in</button>
+            <button class="rowBox" name = "login" onclick="location.href='profile.html'" type="button">Log in</button>
         </p>
     </form>
 </body>
