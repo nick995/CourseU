@@ -7,3 +7,8 @@
  3. Ensure that all tables span the whole width of the main content.???
 
 4. Both text entries and the submission button should be half as wide as the main content. ???
+
+=====================================================================================================================
+
+5. In submissions.html, leave the text entries in the "grade" column and the "Submit" button at their default widths.
+
