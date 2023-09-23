@@ -1,30 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400&display=swap');
 
 * {
-    font-family: 'IBM Plex Mono', monospace;
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'IBM Plex Mono', monospace;    /* for code */
+    font-family: 'IBM Plex Sans', sans-serif;   /*all text on the page */
+    
     line-height: 1.25;
     margin-bottom: 1rem;
 }
 
 /* Set the line-height to 1.5× inside tables. */
-.table{
+table{
     line-height: 1.5;
-    width: 100%;
+    text-align: left;
+    width: 50%;
 }
 
+
+.maincontents{
+    display: flex;
+    flex-direction: column;
+    background-color: yellow;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.maincontentsStyle{
+    display: inline-flexbox;
+    flex-direction: column;
+    padding: 1rem;
+    max-width: 50rem;
+    background-color: green;
+}
+
+
 .bold{
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-weight: bold;
 }
 
 .navigation{
+    /* display: flex;
+    flex-direction: row;
+    font-size: 125%; */
     line-height: 1.25;
-    font-size: 125%;
+
+    display: flex;
     background-color: rgb(221, 221, 221);
     box-shadow: 0 0 5px gray;
+    justify-content: center;
     margin-bottom: 2rem;
+    align-items: center;
+}
+
+.naviformat{
+    display: flex;
+    flex-direction: row;
+    font-size: 125%;
+    width: 50rem;
+    gap: 1rem;
+    text-align: center;
+    background-color: green;
+
+}
+.marginRight{
+    margin-left: auto;
 }
 
 .src{
@@ -45,13 +85,6 @@
     background-color: rgb(177, 195, 222);
     border: 2px solid rgb(32, 74, 135)
 }
-
-/* Make sure there are 3rem of whitespace between 
-   the page title and the navigation banner. */
-.whiteSpace3rem{
-    white-space: 3rem;
-}
-
 /*implement hover to 'a'*/
 a:hover{
     color: red;
@@ -62,10 +95,6 @@ a:hover{
 Make table columns that contain numbers right-aligned. */
 .alnright{
     text-align: right;
-}
-
-.whitespace1rem{
-    white-space: 1rem;
 }
 
 .rowContainer{
@@ -85,16 +114,19 @@ Make table columns that contain numbers right-aligned. */
     align-content: center;
 }
 
-.test{
-
-}
-
 .horizonAdj{
     display: flex;
     flex-direction: row;
     align-items: left;
     gap: 1rem;
 }
+
+/* 
+table{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+} */
 
 /* .flex-container{
     display: flex;
