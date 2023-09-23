@@ -1,42 +1,67 @@
 <!DOCTYPE html>
-<meta charset="utf-8"> 
+<meta charset="utf-8" />
 <html lang="en">
+  <!-- the relationship type should be stylesheet -->
+  <link rel="stylesheet" type="text/css" href="/static/main.css" />
 
-<!-- the relationship type should be stylesheet -->
-<link rel="stylesheet" type="text/css" href="/static/main.css" />
+  <head>
+    <title>Assignment 1 (HTML) - CS 3550</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/icon type" />
+  </head>
 
-<head>
-  <title>Assignment 1 (HTML) - CS 3550</title>
-  <link rel="icon" href="/static/favicon.ico" type="image/icon type">
-</head>
-
-
-<body>
-    <header class="navigation"> 
-        <h1 class="bold">CS 3550 </h1>
-        <a href="assignments.html" title="This link goes Assignments page">Assignments</a>
+  <header class="navigation">
+    <div class="naviformat">
+      <div class="bold">CS 3550</div>
+      <div>
+        <a href="assignments.html" title="This link goes Assignments page"
+          >Assignments</a
+        >
+      </div>
+      <div class="marginleft">
         <a href="profile.html" title="This link goes profile page">Profile</a>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <header>
-        <h1 class="pageTitle">Log in </h1>
-    </header>
+  <div class="maincontents">
+    <div class="maincontentsStyle">
+      <header class="pageTitle">
+        <p>Log in</p>
+      </header>
 
-    <form class="loginForm">
-        <p class="rowContainer">
-            <label class="rowBox" for="username">Username:</label>
-            <input class="rowBox" type="text" id="username" name="username" autofocus><br><br>
-        </p>
-        <p class="rowContainer">
-            <label class="rowBox" for="password">Password:</label>
-            <input class="rowBox" type="password" id="password" name="password"><br><br>
-        </p>
-        
-        <!-- is it okay? -->
-        <p class="rowContainer">
-            <label for="login"></label>
-            <button class="rowBox" name = "login" onclick="location.href='profile.html'" type="button">Log in</button>
-        </p>
-    </form>
-</body>
+      <form class="loginForm">
+        <div class="rowContainer">
+          <label class="rowBox" for="username">Username:</label>
+          <input
+            class="rowBox"
+            type="text"
+            id="username"
+            name="username"
+            autofocus
+          />
+        </div>
+        <div class="rowContainer">
+          <label class="rowBox" for="password">Password:</label>
+          <input
+            class="rowBox"
+            type="password"
+            id="password"
+            name="password"
+          />
+        </div>
+
+        <div class="rowContainer">
+          <label for="login"></label>
+          <button
+            class="rowBox"
+            name="login"
+            onclick="location.href='profile.html'"
+            type="button"
+          >
+            Log in
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </html>

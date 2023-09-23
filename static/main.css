@@ -17,16 +17,17 @@ html{
 
 /* Set the line-height to 1.5× inside tables. */
 table{
+    margin-top: 1rem;
     line-height: 1.5;
     text-align: left;
-    width: 50%;
+    max-width: 100%;
 }
 
 
 .maincontents{
     display: flex;
     flex-direction: column;
-    align-items: center;    /*make main contents go to middle*/
+    align-items: center;
 }
 
 
@@ -35,16 +36,28 @@ table{
     flex-direction: column;
     padding-left: 1rem;
     padding-right: 1rem;
+    width: 50rem;
     max-width: 50rem;
 }
 
 /*implement hover to 'a'*/
 a:hover{
-    color: black;
     text-decoration: underline;
+    color: rgb(76, 76, 76); /* same color from picture / dark gray looks different */
 }
+
+
+/*The links should have three different possible styles: normal, hover, 
+and click Which are dark gray, dark gray + underlined, and black + underlined*/
+
 a{
     color: rgb(76, 76, 76); /* same color from picture / dark gray looks different */
+    text-decoration: none;
+}
+
+a:active{
+    color: black;
+    text-decoration: underline;
 }
 
 
@@ -58,7 +71,6 @@ p{
 }
 
 .navigation{
-    
     display: flex;
     background-color: rgb(221, 221, 221);
     box-shadow: 0 0 5px gray;   /*no offeset in either the x or y/ 5 pixel blur radius*/
@@ -86,11 +98,19 @@ p{
     border-bottom: solid;
     border-color: rgb(221, 221, 221);
     margin: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: bold;
 }
 
 /*set all text insdie the login form to be 25%*/
 .loginForm{
     font-size: 125%;
+    margin-top: 1rem;
+}
+
+.borderbottom{    
+    border-bottom: solid;
+    border-color: red;
 }
 
 .actionCard{
@@ -133,13 +153,13 @@ Make table columns that contain numbers right-aligned. */
     text-align: right;
 }
 
-/* .rowContainer{
+.rowContainer{
     display: flex;
     flex-direction: row;
     gap: 1rem;
     flex-grow: 1;
     justify-content: center;
-
+    margin-bottom: 1rem;
 }
 .rowBox{
     display: flexbox;
@@ -148,17 +168,4 @@ Make table columns that contain numbers right-aligned. */
     justify-content: center;
     flex-basis: 50%;
     align-content: center;
-} */
-
-
-/* 
-table{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-} */
-
-/* .flex-container{
-    display: flex;
-    justify-content: center;
-} */
+}
