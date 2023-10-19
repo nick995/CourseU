@@ -1,30 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400&display=swap');
 
 * {
-    font-family: 'IBM Plex Mono', monospace;
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'IBM Plex Mono', monospace;    /* for code */
+    font-family: 'IBM Plex Sans', sans-serif;   /*all text on the page */
     line-height: 1.25;
-    margin-bottom: 1rem;
+}
+
+/*Remove any margins or padding on the html and body element*/
+body{
+    margin: 0;
+}
+
+html{
+    margin: 0;
 }
 
 /* Set the line-height to 1.5× inside tables. */
-.table{
+table{
+    margin-top: 1rem;
     line-height: 1.5;
+    text-align: left;
     width: 100%;
 }
 
+.maincontents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.maincontentsStyle{
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 50rem;
+    max-width: 50rem;
+}
+
+/*implement hover to 'a'*/
+a:hover{
+    text-decoration: underline;
+    color: rgb(76, 76, 76); /* same color from picture / dark gray looks different */
+}
+
+
+/*The links should have three different possible styles: normal, hover, 
+and click Which are dark gray, dark gray + underlined, and black + underlined*/
+
+a{
+    color: rgb(76, 76, 76); /* same color from picture / dark gray looks different */
+    text-decoration: none;
+}
+
+a:active{
+    color: black;
+    text-decoration: underline;
+}
+
+
 .bold{
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-weight: bold;
 }
 
+p{
+    margin-bottom: 0;
+}
+
 .navigation{
-    line-height: 1.25;
-    font-size: 125%;
+    display: flex;
     background-color: rgb(221, 221, 221);
-    box-shadow: 0 0 5px gray;
-    margin-bottom: 2rem;
+    box-shadow: 0 0 5px gray;   /*no offeset in either the x or y/ 5 pixel blur radius*/
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.naviformat{
+    display: flex;
+    flex-direction: row;
+    font-size: 125%;
+    max-width: 50rem;
+    width: 50rem;
+    gap: 1rem;
 }
 
 .src{
@@ -32,40 +91,60 @@
 }
 
 .pageTitle{
+    display: flex;
+    flex-direction: column;
     font-size: 150%;
     border-bottom: solid;
     border-color: rgb(221, 221, 221);
+    margin: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: bold;
 }
 
+/*set all text insdie the login form to be 25%*/
 .loginForm{
     font-size: 125%;
+    margin-top: 1rem;
 }
 
 .actionCard{
+    display: flex;
+    flex-direction: column;
     background-color: rgb(177, 195, 222);
-    border: 2px solid rgb(32, 74, 135)
+    border: 2px solid rgb(32, 74, 135);
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.actionCard a{
+    margin-left: auto;
 }
 
-/* Make sure there are 3rem of whitespace between 
-   the page title and the navigation banner. */
-.whiteSpace3rem{
-    white-space: 3rem;
+.marginleft{
+    margin-left: auto;
 }
 
-/*implement hover to 'a'*/
-a:hover{
-    color: red;
-    text-decoration: underline;
+.horizonline{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
 }
+
+.horizonAdj{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.marginbottom{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
 
 /* 
 Make table columns that contain numbers right-aligned. */
 .alnright{
     text-align: right;
-}
-
-.whitespace1rem{
-    white-space: 1rem;
 }
 
 .rowContainer{
@@ -74,7 +153,7 @@ Make table columns that contain numbers right-aligned. */
     gap: 1rem;
     flex-grow: 1;
     justify-content: center;
-
+    margin-bottom: 1rem;
 }
 .rowBox{
     display: flexbox;
@@ -84,25 +163,3 @@ Make table columns that contain numbers right-aligned. */
     flex-basis: 50%;
     align-content: center;
 }
-
-.test{
-    background-color: green;
-}
-.test2{
-    background-color: aqua;
-}
-
-.horizonAdj{
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    gap: 1rem;
-    justify-content: center;
-}
-
-
-
-/* .flex-container{
-    display: flex;
-    justify-content: center;
-} */
