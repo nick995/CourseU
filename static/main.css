@@ -86,7 +86,10 @@ Make table columns that contain numbers right-aligned. */
 }
 
 .test{
-
+    background-color: green;
+}
+.test2{
+    background-color: aqua;
 }
 
 .horizonAdj{
@@ -94,7 +97,10 @@ Make table columns that contain numbers right-aligned. */
     flex-direction: row;
     align-items: left;
     gap: 1rem;
+    justify-content: center;
 }
+
+
 
 /* .flex-container{
     display: flex;
