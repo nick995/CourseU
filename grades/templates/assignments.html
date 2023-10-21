@@ -45,76 +45,15 @@
           <th class="alnright">Weight</th>
         </tr>
       </thead>
-
+      <!--Loop statements-->
+      {% for assignment in assignments  %}
       <tr>
-        <td>
-          <a href="index.html" title="This link goes Github username"
-            >Github username</a
-          >
-        </td>
-        <td>Aug 01</td>
-        <td class="alnright">1</td>
+        <!-- <td>{{assignment.title}}</td> -->
+        <td><a href="/{{assignment.id}}/">{{assignment.title}}</a></td>
+        <td>{{assignment.deadline}}</td>
+        <td class="alnright">{{assignment.weight}}</td>
       </tr>
-
-      <tr>
-        <td>
-          <a href="index.html" title="This link goes Assignments 1"
-            >Homework 1 (HTML)</a
-          >
-        </td>
-        <td>Sep 08</td>
-        <td class="alnright">100</td>
-      </tr>
-
-      <tr>
-        <td>
-          <a href="index.html" title="This link goes Assignments 2"
-            >Homework 2 (CSS)</a
-          >
-        </td>
-        <td>Sep 22</td>
-        <td class="alnright">100</td>
-      </tr>
-
-      <tr>
-        <td>
-          <a href="index.html" title="This link goes Assignments 3"
-            >Homework 3 (Backend)</a
-          >
-        </td>
-        <td>Sep 27</td>
-        <td class="alnright">100</td>
-      </tr>
-
-      <tr>
-        <td>
-          <a href="index.html" title="This link goes Assignments 4"
-            >Homework 4 (Deploy)</a
-          >
-        </td>
-        <td>Nov 10</td>
-        <td class="alnright">100</td>
-      </tr>
-
-      <tr>
-        <td>
-          <a href="index.html" title="This link goes Assignments 5"
-            >Homework 5 (Permissions)</a
-          >
-        </td>
-        <td>Nov 24</td>
-        <td class="alnright">100</td>
-      </tr>
-
-      <tr>
-        <td>
-          <a href="index.html" title="This link goes Assignments 6"
-            >Homework 6 (JS)</a
-          >
-        </td>
-        <td>Dec 08</td>
-        <td class="alnright">100</td>
-      </tr>
+      {% endfor %}
     </table>
 </div>
 
