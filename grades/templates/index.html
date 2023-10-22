@@ -29,29 +29,20 @@
     <div class="maincontentsStyle">    
 
         <header class="pageTitle">
-            Homework 1 (HTML)
+            {{assignment_title| title}}
         </header>
 
         <span class="marginbottom">
-            Due September 08, total of 100 points
+            Due {{due_month|safe}} {{due_day}}, total of {{total_points}} point{{points|pluralize}}
         </span>
 
         <div class="actionCard">
-<!-- 
-            {{total_assignment}}
-            {{assignments}}
-            {{total_student}} -->
-            {{submissions}}
 
-            {{sub_object}}
-
-            <p> grader</p>
-            {{assigned_submission}}
-                <p>Currently 2/3 submissions </p>
-                <p class="horizonline">
-                1 submission assigned to you
-                <a href="submissions.html" title="This link goes submission">Grade</a>
-                </p>
+            <p>Currently {{submissions}} /{{total_student}} submissions </p>
+            <p class="horizonline">
+            {{assigned}} submission assigned to you
+            <a href="/{{assignment.id}}/submissions" title="This link goes submission">Grade</a>
+            </p>
         </div>
     
         <header><p class="bold">Description</p></header>
