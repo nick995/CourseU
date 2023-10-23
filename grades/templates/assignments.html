@@ -50,7 +50,7 @@
       <tr>
         <!-- <td>{{assignment.title}}</td> -->
         <td><a href="/{{assignment.id}}/">{{assignment.title}}</a></td>
-        <td>{{assignment.deadline}}</td>
+        <td>{{assignment.deadline | date:"M j"}}</td>
         <td class="alnright">{{assignment.weight}}</td>
       </tr>
       {% endfor %}

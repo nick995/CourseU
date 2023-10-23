@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from . import models
 from django.db.models import Count
+from django.http import Http404
 
 # Create your views here.
 
@@ -12,30 +13,44 @@ def assignments(request):
 
 def index(request, assignment_id):
 
-    total_assignment = models.Assignment.objects.count()
-    
+    assignment_id = 1
+
+    submission_object = models.Submission.objects.filter(assignment = assignment_id)
+    assignment_object = models.Assignment.objects.get(id = assignment_id)
+
+    try:
+        grader = models.User.objects.get(username="ta1")
+    except models.User.DoesNotExist:
+        raise ValueError(f"grader (ta1) is not exists")
+
     # How many total submissions there are to this assignment(assignment_id)
-    submission_total = models.Submission.objects.filter(assignment=assignment_id).count()
+    submission_total = submission_object.count()
+
     # How many of submissions are assigned to "you" with a name of ta1
-    assigned = models.Submission.objects.filter(assignment=assignment_id).filter(grader__username = 'ta1').count()
+    assigned_assignment = submission_object.filter(grader = grader).count()
+
     # How many total students there are
-    total_student = models.Group.objects.get(name="Students").user_set.count()
+    try:
+        total_student = models.Group.objects.get(name="Students").user_set.count()
+    except models.Group.DoesNotExist:
+        raise ValueError(f"Student group is not found")
     
-    assignment_title = models.Assignment.objects.get(id = assignment_id).title
-    total_points = models.Assignment.objects.get(id = assignment_id).points
-    due_month = models.Assignment.objects.get(id = assignment_id).deadline.strftime('%B')
-    due_day = models.Assignment.objects.get(id = assignment_id).deadline.strftime('%d')
+    try:
+        assignment_title = assignment_object.title
+        assignment_point = assignment_object.points
+        assginment_deadline = assignment_object.deadline
+    except models.Assignment.DoesNotExist:
+        raise Http404(f"Could not find assignment with id {assignment_id}")
     
     return render(request, 
                  "index.html",
                  {
                   'total_student': total_student,
                   'submissions': submission_total,
-                  'assigned': assigned,
+                  'assigned': assigned_assignment,
                   'assignment_title': assignment_title,
-                  'total_points': total_points,
-                  'due_day': due_day,
-                  'due_month': due_month
+                  'total_points': assignment_point,
+                  'deadline': assginment_deadline
                   })
 
 def login_form(request):
