@@ -13,7 +13,7 @@ def assignments(request):
 
 def index(request, assignment_id):
 
-    assignment_id = 1
+    assignment_id = 3
 
     submission_object = models.Submission.objects.filter(assignment = assignment_id)
     assignment_object = models.Assignment.objects.get(id = assignment_id)
@@ -39,6 +39,7 @@ def index(request, assignment_id):
         assignment_title = assignment_object.title
         assignment_point = assignment_object.points
         assginment_deadline = assignment_object.deadline
+        assignment_description = assignment_object.description
     except models.Assignment.DoesNotExist:
         raise Http404(f"Could not find assignment with id {assignment_id}")
     
@@ -50,7 +51,8 @@ def index(request, assignment_id):
                   'assigned': assigned_assignment,
                   'assignment_title': assignment_title,
                   'total_points': assignment_point,
-                  'deadline': assginment_deadline
+                  'deadline': assginment_deadline,
+                  'description': assignment_description
                   })
 
 def login_form(request):
