@@ -13,8 +13,6 @@ def assignments(request):
 
 def index(request, assignment_id):
 
-    assignment_id = 3
-
     submission_object = models.Submission.objects.filter(assignment = assignment_id)
     assignment_object = models.Assignment.objects.get(id = assignment_id)
 
