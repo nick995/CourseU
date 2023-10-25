@@ -12,9 +12,15 @@ def assignments(request):
                   dict(assignments=assignments))
 
 def index(request, assignment_id):
+    try:
+        submission_object = models.Submission.objects.filter(assignment = assignment_id)
+        assignment_object = models.Assignment.objects.get(id = assignment_id)
+    except models.User.DoesNotExist:
+        raise ValueError(f"This is not valid assignment", assignment_id)
 
-    submission_object = models.Submission.objects.filter(assignment = assignment_id)
-    assignment_object = models.Assignment.objects.get(id = assignment_id)
+    print(assignment_id)
+    print("assignment object = ", assignment_object)
+    print("id = ", models.Assignment.objects.model)
 
     try:
         grader = models.User.objects.get(username="ta1")

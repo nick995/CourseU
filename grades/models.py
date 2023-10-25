@@ -16,14 +16,16 @@ class Assignment(models.Model):
     points = models.IntegerField(
         default=100,
     )
+    # for testing
 class Submission(models.Model):
 
     assignment = models.ForeignKey(Assignment,
                                    on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    grader = models.ForeignKey(User, on_delete=models.CASCADE,
-                               related_name='graded_set')
+    grader = models.ForeignKey(User, on_delete=models.SET_NULL,
+                               related_name='graded_set',
+                               null=True, blank=True)
     file = models.FileField()
-    score = models.FloatField(default=0.0, blank=True, null=True)
+    score = models.FloatField(blank=True, null=True)
 
     
