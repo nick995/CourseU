@@ -38,7 +38,7 @@
     <div class="actionCard">
       <p class="horizonline">
 
-        Currently logged in as ta1.
+        Currently logged in as {{username}}.
         <a
           class="marginleft"
           role="button"
@@ -58,7 +58,23 @@
           <th class="alnright">Graded</th>
         </tr>
       </thead>
-      <tr>
+
+      {% for assignment in assignment_list %}
+        <tr> 
+          <td> {{assignment.id}} </td>
+        </tr>
+      {% endfor %}
+
+      {% comment %} {% for submission in submissions_count %}
+        <tr>
+          <td> test </td>
+        
+          <td>
+          {{submission}}1
+          </td>
+        </tr>
+        {% endfor %} {% endcomment %}
+        <!-- <tr>
         <td>
           <a
             role="button"
@@ -140,7 +156,7 @@
           >
         </td>
         <td class="alnright">Not due</td>
-      </tr>
+      </tr> -->
     </table>
 </div>
 </div>

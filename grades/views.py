@@ -7,6 +7,7 @@ from django.http import Http404
 
 def assignments(request):
     assignments = models.Assignment.objects.all()
+
     return render(request, 
                   "assignments.html",
                   dict(assignments=assignments))
@@ -59,11 +60,26 @@ def index(request, assignment_id):
                   'description': assignment_description
                   })
 
+# Phase 5
+def profile(request):
+    # passing query set 
+    assignments_list = models.Assignment.objects.all()
+
+    
+
+    username = "ta1"
+    submissions_count = models.Submission.objects.filter(grader__username = username).values("assignment").annotate(count = Count("assignment"))
+
+    return render(request, 
+                  "profile.html",
+                  {
+                      'assignment_list': assignments_list,
+                      'submissions_count': submissions_count,
+                      'username': username
+                  })
+
 def login_form(request):
     return render(request, "login.html")
-
-def profile(request):
-    return render(request, "profile.html")
 
 def submissions(request, assignment_id):
     return render(request, "submissions.html")
