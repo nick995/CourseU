@@ -1,12 +1,10 @@
 from django.shortcuts import render
 from . import models
-from django.db.models import Count
-<<<<<<< HEAD
-from django.http import Http404, HttpResponse
-=======
+from django.db.models import Q, Count, Case, When, Value, BooleanField, F
 from django.http import Http404
+from django.utils import timezone
 
->>>>>>> 3ceca5ab7554479f1cb64ff0bffa643f6fb888dc
+
 # Create your views here.
 
 def assignments(request):
@@ -23,32 +21,11 @@ def index(request, assignment_id):
     except models.User.DoesNotExist:
         raise ValueError(f"This is not valid assignment", assignment_id)
 
-    print(assignment_id)
-    print("assignment object = ", assignment_object)
-    print("id = ", models.Assignment.objects.model)
-
     try:
         grader = models.User.objects.get(username="ta1")
     except models.User.DoesNotExist:
         raise ValueError(f"grader (ta1) is not exists")
 
-<<<<<<< HEAD
-    try:    
-        # How many total submissions there are to this assignment(assignment_id)
-        submission_total = models.Submission.objects.filter(assignment=assignment_id).count()
-        # How many of submissions are assigned to "you" with a name of ta1
-        assigned = models.Submission.objects.filter(assignment=assignment_id).filter(grader__username = 'ta1').count()
-        # How many total students there are
-        total_student = models.Group.objects.get(name="Students").user_set.count()
-        
-        assignment_title = models.Assignment.objects.get(id = assignment_id).title
-        total_points = models.Assignment.objects.get(id = assignment_id).points
-        due_month = models.Assignment.objects.get(id = assignment_id).deadline.strftime('%B')
-        due_day = models.Assignment.objects.get(id = assignment_id).deadline.strftime('%d')
-        description = models.Assignment.objects.get(id = assignment_id).description
-    except:
-        raise Http404("...")
-=======
     # How many total submissions there are to this assignment(assignment_id)
     submission_total = submission_object.count()
 
@@ -69,7 +46,6 @@ def index(request, assignment_id):
     except models.Assignment.DoesNotExist:
         raise Http404(f"Could not find assignment with id {assignment_id}")
     
->>>>>>> 3ceca5ab7554479f1cb64ff0bffa643f6fb888dc
     return render(request, 
                  "index.html",
                  {
@@ -77,12 +53,6 @@ def index(request, assignment_id):
                   'submissions': submission_total,
                   'assigned': assigned_assignment,
                   'assignment_title': assignment_title,
-<<<<<<< HEAD
-                  'total_points': total_points,
-                  'due_day': due_day,
-                  'due_month': due_month,
-                  'description': description
-=======
                   'total_points': assignment_point,
                   'deadline': assginment_deadline,
                   'description': assignment_description
@@ -90,21 +60,60 @@ def index(request, assignment_id):
 
 # Phase 5
 def profile(request):
-    # passing query set 
-    assignments_list = models.Assignment.objects.all()
 
-    
 
     username = "ta1"
-    submissions_count = models.Submission.objects.filter(grader__username = username).values("assignment").annotate(count = Count("assignment"))
+    
+    current_time = timezone.now()
 
+    # passing query set 
+    # assignments_list = models.Assignment.objects.all().annotate(
+    #     assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = username))
+    #     ).annotate(total = Count('submission__author')
+    #     ).annotate(duedate = Case(When('assignment__deadline__gt',F('datetime.now()')), then =Value(True)),
+    #                               default=Value(False),
+    #                               output_field=BooleanField).values('title', 'assigned_count', 'total', 'deadline', 'duedate')
+
+    assignments_list = models.Assignment.objects.all().annotate(
+        assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = username))
+        ).annotate(total = Count('submission__author')
+        ).annotate( isValid = Case(When(deadline__lt = current_time, then=Value(True)),
+                                    default=Value(False),
+                                    output_field=BooleanField()
+                                        )
+        ).values('title', 'assigned_count', 'total', 'isValid')
+    
+    # for assignment in assignments_list:
+    #     print(assignment["isValid"])
+    
+    # .annotate(check = Case(When(F('deadline') < timezone.now(), then=Value(False)),
+    #                             default=Value(True))
+    #     )
+    
+    
+    # for assignment in assignments_list:
+        
+    #     if assignment["duedate"] < timezone.now():
+    #         assignment["valid"] = False
+    
+    # assignment_list = models.Assignment.objects.all()
+
+
+    
+    # for assignment in assignment_list:
+        
+    #     if assignment.deadline < timezone.now():
+    #         assignment.to_grade = str(UNGRADED COUNT) + " / " + str(GRADED COUNT)
+    
+    
+    # test = models.Assignment.objects.filter(submission__grader__username = username).annotate(gc=Count('submission__grader')).values('title', 'gc')
+    
+    # submissions_count = models.Submission.objects.filter(grader__username = username).values("assignment").annotate(count = Count("assignment"))
+    
     return render(request, 
                   "profile.html",
                   {
-                      'assignment_list': assignments_list,
-                      'submissions_count': submissions_count,
-                      'username': username
->>>>>>> 3ceca5ab7554479f1cb64ff0bffa643f6fb888dc
+                      "assignments": assignments_list
                   })
 
 def login_form(request):

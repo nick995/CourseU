@@ -59,11 +59,26 @@
         </tr>
       </thead>
 
-      {% for assignment in assignment_list %}
-        <tr> 
-          <td> {{assignment.id}} </td>
-        </tr>
+      {% for assignment in assignments%}
+      <tr>
+        <td>{{assignment.title}} </td>
+
+
+        {% if assignment.isValid %}
+          <td class="alnright"> {{ assignment.assigned_count}} / {{assignment.total}} </td>
+        {% else %}
+          <td class="alnright"> Not Due </td>        
+        {% endif %}
+
+      </tr>
       {% endfor %}
+      {% comment %} {% for assignment in assignment_list %}
+        <tr> 
+          <td> {{assignment.title}} </td>
+
+          <td class= "alnright"> {{assignment.assigned_count}} / {{assignment.total}} </td>
+        </tr>
+      {% endfor %} {% endcomment %}
 
       {% comment %} {% for submission in submissions_count %}
         <tr>
