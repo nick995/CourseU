@@ -33,20 +33,23 @@
         </header>
 
         <span class="marginbottom">
-            Due {{due_month|safe}} {{due_day}}, total of {{total_points}} point{{points|pluralize}}
+            Due {{due_month}} {{due_day}}, total of {{total_points}} point{{points|pluralize}}
         </span>
 
         <div class="actionCard">
 
             <p>Currently {{submissions}} /{{total_student}} submissions </p>
             <p class="horizonline">
-            {{assigned}} submission assigned to you
+            {{assigned}} submission{{assigned | pluralize}} assigned to you
             <a href="/{{assignment.id}}/submissions" title="This link goes submission">Grade</a>
             </p>
         </div>
     
         <header><p class="bold">Description</p></header>
-        <p>
+
+        {{description | safe}}
+
+        {% comment %} <p>
             In this assignment, you will set up a web server serving HTML
             web pages for the grading application:
             <ul>
@@ -57,11 +60,11 @@
     
         <span>
         For example, here is a page <strong> you will make</strong>, in a file called <code class="src"> assignments.html </code>:
-        </span>
+        </span> {% endcomment %}
     
-        <p>
+        {% comment %} <p>
             <img src="/static/assignments.png" alt="A example of assignments image">
-        </p>
+        </p> {% endcomment %}
     
     </div>
 </div>
