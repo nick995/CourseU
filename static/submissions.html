@@ -34,7 +34,7 @@
         </header>
 
         <span class="marginbottom">
-            All grades out of 100
+            All grades out of 80
         </span>
 
         <form>
@@ -47,7 +47,12 @@
                     </tr>
                 </thead>
 
-                <tr>
+                {% comment %} {% for author in authors_name%}
+
+                    <td> {{author}} </td>
+
+                {% endfor %} {% endcomment %}
+                {% comment %} <tr>
                     <td>s1</td>
                     <td> <a role="button" href="submissions.html" title="This link goes index"> Submission </a> </td>
                     <td><input type="number" title="Assignment1 grade" name="Grade"> </td>
@@ -57,7 +62,7 @@
                     <td>s2</td>
                     <td> <a role="button" href="submissions.html" title="This link goes index"> Submission </a> </td>
                     <td><input type="number" title="Assignment2 grade" name="Grade"> </td>
-                </tr>
+                </tr> {% endcomment %}
             </table>
 
             <div class="horizonAdj">

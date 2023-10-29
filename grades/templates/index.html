@@ -37,13 +37,6 @@
         </span>
 
         <div class="actionCard">
-
-            <!-- {% if total_student == 1 %}
-            <p>Currently {{submissions}}submissions </p>
-            {% else %}
-            <p>Currently {{submissions}} /{{total_student}} submissions </p>
-            {% endif %} -->
-
             <p>Currently {{submissions}} / {{total_student}} submission{{total_student | pluralize}} </p>
             <p class="horizonline">
             {{assigned}} submission{{assigned | pluralize }} assigned to you
@@ -55,24 +48,7 @@
 
         <p>
             {{description |safe}}
-        </p>
-        <!-- <p>
-            In this assignment, you will set up a web server serving HTML
-            web pages for the grading application:
-            <ul>
-                <li> Configure and start a <em> bassic web server</em> using Django</li>
-                <li> Create <em>basic web pages</em> using HTML for data/content
-            </ul>
-        </p>
-    
-        <span>
-        For example, here is a page <strong> you will make</strong>, in a file called <code class="src"> assignments.html </code>:
-        </span> {% endcomment %}
-    
-        {% comment %} <p>
-            <img src="/static/assignments.png" alt="A example of assignments image">
-        </p> -->
-    
+        </p>    
     </div>
 </div>
 

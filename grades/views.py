@@ -22,7 +22,7 @@ def index(request, assignment_id):
         raise ValueError(f"This is not valid assignment", assignment_id)
 
     try:
-        grader = models.User.objects.get(username="ta1")
+        assigned_grader = models.User.objects.get(username="ta1")
     except models.User.DoesNotExist:
         raise ValueError(f"grader (ta1) is not exists")
 
@@ -30,7 +30,7 @@ def index(request, assignment_id):
     submission_total = submission_object.count()
 
     # How many of submissions are assigned to "you" with a name of ta1
-    assigned_assignment = submission_object.filter(grader = grader).count()
+    assigned_assignment = submission_object.filter(grader = assigned_grader).count()
 
     # How many total students there are
     try:
@@ -58,6 +58,49 @@ def index(request, assignment_id):
                   'description': assignment_description
                   })
 
+
+def submissions(request, assignment_id):
+    
+    #The "Student" column has the submission's author's name
+    #The "Submission" link should point to the submission's file.url field. This link won't work, however, until Homework 5.
+    #The input field should have a name of grade-X where X is the submission's ID and have a value which is the submission's score.
+    print("assignment_id = ", assignment_id)
+    try:
+        assignment_object = models.Assignment.objects.get(id = assignment_id)
+        submission_object = models.Submission.objects.filter(assignment = assignment_id)
+    except models.User.DoesNotExist:
+        raise ValueError(f"This is not valid assignment", assignment_id)
+
+    try:
+        assigned_grader = models.User.objects.get(username="ta1")
+    except models.User.DoesNotExist:
+        raise ValueError(f"grader (ta1) is not exists")
+    
+    try:
+        assignment_title = assignment_object.title
+        assignment_point = assignment_object.points
+    except models.Assignment.DoesNotExist:
+        raise Http404(f"Could not find assignment with id {assignment_id}")
+    
+    submission_info = submission_object.filter(grader = assigned_grader
+                                            ).order_by('author__username'
+                                            ).annotate(author_username = F('author__username'),
+                                                       submit_file = F('file'),
+                                                       get_score = F('score'),
+                                                       user_id = F('id')
+                                            ).values("author_username", "submit_file", "get_score", "user_id" )
+
+    for assign in submission_info:
+        print(assign)
+
+    return render(request, "submissions.html",
+                  {
+                      'submission_info': submission_info,
+                      'assignment_title': assignment_title,
+                      'assignment_point': assignment_point
+                  })
+
+
 # Phase 5
 def profile(request):
 
@@ -81,7 +124,7 @@ def profile(request):
                                     default=Value(False),
                                     output_field=BooleanField()
                                         )
-        ).values('title', 'assigned_count', 'total', 'isValid')
+        ).values('title', 'assigned_count', 'total', 'isValid', 'id')
     
     # for assignment in assignments_list:
     #     print(assignment["isValid"])
@@ -118,6 +161,3 @@ def profile(request):
 
 def login_form(request):
     return render(request, "login.html")
-
-def submissions(request, assignment_id):
-    return render(request, "submissions.html")

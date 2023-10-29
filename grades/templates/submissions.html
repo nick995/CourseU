@@ -30,11 +30,11 @@
     <div class="maincontentsStyle">
 
         <header class="pageTitle">
-            <strong>Homework 1 (HTML)</strong>
+            <strong>{{assignment_title}} </strong>
         </header>
 
         <span class="marginbottom">
-            All grades out of 100
+            All grades out of {{assignment_point}}
         </span>
 
         <form>
@@ -47,7 +47,16 @@
                     </tr>
                 </thead>
 
-                <tr>
+                {% for submission in submission_info%}
+
+                    <tr>
+                        <td> {{submission.author_username}} </td>
+                        <td> <a href={{ submission.submit_file}}>Submission</a></td>
+                        <td><input type="number" title="Assignment1 grade" name="grade-{{submission.user_id}}" value= {{submission.get_score}}> </td>
+                    </tr>
+
+                {% endfor %}
+                {% comment %} <tr>
                     <td>s1</td>
                     <td> <a role="button" href="submissions.html" title="This link goes index"> Submission </a> </td>
                     <td><input type="number" title="Assignment1 grade" name="Grade"> </td>
@@ -57,7 +66,7 @@
                     <td>s2</td>
                     <td> <a role="button" href="submissions.html" title="This link goes index"> Submission </a> </td>
                     <td><input type="number" title="Assignment2 grade" name="Grade"> </td>
-                </tr>
+                </tr> {% endcomment %}
             </table>
 
             <div class="horizonAdj">

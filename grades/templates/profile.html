@@ -60,16 +60,15 @@
       </thead>
 
       {% for assignment in assignments%}
-      <tr>
-        <td>{{assignment.title}} </td>
 
+      <tr>
+        <td><a href="/{{assignment.id}}/submissions" title="This link goes submission"> {{assignment.title}} </a></td>
 
         {% if assignment.isValid %}
           <td class="alnright"> {{ assignment.assigned_count}} / {{assignment.total}} </td>
         {% else %}
           <td class="alnright"> Not Due </td>        
         {% endif %}
-
       </tr>
       {% endfor %}
       {% comment %} {% for assignment in assignment_list %}
