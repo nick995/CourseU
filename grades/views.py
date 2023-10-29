@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . import models
 from django.db.models import Q, Count, Case, When, Value, BooleanField, F
 from django.http import Http404
 from django.utils import timezone
+from django.views.decorators.http import require_GET, require_POST
 
 
 # Create your views here.
@@ -97,7 +98,8 @@ def submissions(request, assignment_id):
                   {
                       'submission_info': submission_info,
                       'assignment_title': assignment_title,
-                      'assignment_point': assignment_point
+                      'assignment_point': assignment_point,
+                      'assignment_id': assignment_id
                   })
 
 
@@ -156,8 +158,24 @@ def profile(request):
     return render(request, 
                   "profile.html",
                   {
-                      "assignments": assignments_list
+                      "assignments": assignments_list,
+                      "username": username
                   })
 
 def login_form(request):
     return render(request, "login.html")
+
+@require_POST
+def grade (request, assignment_id):
+
+    # submission_object = models.Submission.objects.filter(assignment = assignment_id)
+
+    for x in request.POST:
+        if x[:6] == "grade-":
+            submission = models.Submission.objects.get(id = x[6])
+            submission.score = request.POST[x]
+            submission.save()
+
+            print("after update = ", submission.score)
+    
+    return redirect(f"{assignment_id}/grade")

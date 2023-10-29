@@ -2,29 +2,7 @@
 <meta charset="utf-8">
 <html lang="en">
 
-<!-- the relationship type should be stylesheet -->
-<link rel="stylesheet" type="text/css" href="/static/main.css" />
-
-<head>
-    <title>Assignment 1 (HTML) - CS 3550</title>
-    <link rel="icon" href="/static/favicon.ico" type="image/icon type">
-</head>
-
-
-<header class="navigation">
-    <div class="naviformat">
-        <div class="bold">
-            CS 3550
-        </div>
-        <div>
-            <a href="assignments.html" title="This link goes Assignments page">Assignments</a>
-        </div>
-        <div class="marginleft">
-            <a href="profile.html" title="This link goes profile page">Profile</a>
-        </div>
-    </div>
-</header>
-
+{% include "header.html" with title=assignment_title %}
 
 <div class="maincontents">
     <div class="maincontentsStyle">
@@ -37,7 +15,8 @@
             All grades out of {{assignment_point}}
         </span>
 
-        <form>
+        <form action= "/{{assignment_id}}/grade" method ="post">
+            {% csrf_token %}
             <table>
                 <thead>
                     <tr>
@@ -52,33 +31,27 @@
                     <tr>
                         <td> {{submission.author_username}} </td>
                         <td> <a href={{ submission.submit_file}}>Submission</a></td>
-                        <td><input type="number" title="Assignment1 grade" name="grade-{{submission.user_id}}" value= {{submission.get_score}}> </td>
+                        <td><input type="number" 
+                            title="Assignment1 grade" 
+                            name= grade-{{submission.user_id}} 
+                            value= {{submission.get_score}}> 
+                        </td>
                     </tr>
 
                 {% endfor %}
-                {% comment %} <tr>
-                    <td>s1</td>
-                    <td> <a role="button" href="submissions.html" title="This link goes index"> Submission </a> </td>
-                    <td><input type="number" title="Assignment1 grade" name="Grade"> </td>
-                </tr>
-
-                <tr>
-                    <td>s2</td>
-                    <td> <a role="button" href="submissions.html" title="This link goes index"> Submission </a> </td>
-                    <td><input type="number" title="Assignment2 grade" name="Grade"> </td>
-                </tr> {% endcomment %}
             </table>
 
             <div class="horizonAdj">
                 <div>
-                    <label for="submit"></label>
-                    <button role=button name="submit" onclick="location.href='submissions.html'"
-                        type="button">Submit</button>
+                    <button>Submit</button>
                 </div>
-
-                <div><a href="assignments.html" title="This link goes assignment">Back to assignment</a></div>
-
+                <div><a href="/{{assignment_id}}/" title="This link goes assignment">Back to assignment</a></div>
             </div>
+
+            {% comment %} <input type=hidden name=show value={{tvshow.id}}>
+            <input type=hidden name=episode value={{episode.id}}>
+            <button>Downvote</button> {% endcomment %}
+
         </form>
 
 

@@ -27,5 +27,4 @@ class Submission(models.Model):
                                null=True, blank=True)
     file = models.FileField()
     score = models.FloatField(blank=True, null=True)
-
     
