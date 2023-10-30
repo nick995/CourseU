@@ -4,18 +4,22 @@ from django.db.models import Q, Count, Case, When, Value, BooleanField, F
 from django.http import Http404
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 
 # Create your views here.
 
 def assignments(request):
-    assignments = models.Assignment.objects.all()
-
+    try:
+        assignments = models.Assignment.objects.all()
+    except models.Assignment.DoesNotExist:
+        raise Http404(f"Could not find assignments")
     return render(request, 
                   "assignments.html",
                   dict(assignments=assignments))
 
 def index(request, assignment_id):
+    user = "ta1"
     try:
         submission_object = models.Submission.objects.filter(assignment = assignment_id)
         assignment_object = models.Assignment.objects.get(id = assignment_id)
@@ -23,9 +27,9 @@ def index(request, assignment_id):
         raise ValueError(f"This is not valid assignment", assignment_id)
 
     try:
-        assigned_grader = models.User.objects.get(username="ta1")
+        assigned_grader = models.User.objects.get(username=user)
     except models.User.DoesNotExist:
-        raise ValueError(f"grader (ta1) is not exists")
+        raise ValueError(f"grader {user} is not exists")
 
     # How many total submissions there are to this assignment(assignment_id)
     submission_total = submission_object.count()
@@ -56,16 +60,16 @@ def index(request, assignment_id):
                   'assignment_title': assignment_title,
                   'total_points': assignment_point,
                   'deadline': assginment_deadline,
-                  'description': assignment_description
+                  'description': assignment_description,
+                  'id': assignment_id
                   })
-
 
 def submissions(request, assignment_id):
     
+    user = "ta1"
     #The "Student" column has the submission's author's name
     #The "Submission" link should point to the submission's file.url field. This link won't work, however, until Homework 5.
     #The input field should have a name of grade-X where X is the submission's ID and have a value which is the submission's score.
-    print("assignment_id = ", assignment_id)
     try:
         assignment_object = models.Assignment.objects.get(id = assignment_id)
         submission_object = models.Submission.objects.filter(assignment = assignment_id)
@@ -73,9 +77,9 @@ def submissions(request, assignment_id):
         raise ValueError(f"This is not valid assignment", assignment_id)
 
     try:
-        assigned_grader = models.User.objects.get(username="ta1")
+        assigned_grader = models.User.objects.get(username=user)
     except models.User.DoesNotExist:
-        raise ValueError(f"grader (ta1) is not exists")
+        raise ValueError(f"grader {user} is not exists")
     
     try:
         assignment_title = assignment_object.title
@@ -90,10 +94,6 @@ def submissions(request, assignment_id):
                                                        get_score = F('score'),
                                                        user_id = F('id')
                                             ).values("author_username", "submit_file", "get_score", "user_id" )
-
-    for assign in submission_info:
-        print(assign)
-
     return render(request, "submissions.html",
                   {
                       'submission_info': submission_info,
@@ -102,59 +102,21 @@ def submissions(request, assignment_id):
                       'assignment_id': assignment_id
                   })
 
-
 # Phase 5
 def profile(request):
-
-
     username = "ta1"
     
-    current_time = timezone.now()
-
-    # passing query set 
-    # assignments_list = models.Assignment.objects.all().annotate(
-    #     assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = username))
-    #     ).annotate(total = Count('submission__author')
-    #     ).annotate(duedate = Case(When('assignment__deadline__gt',F('datetime.now()')), then =Value(True)),
-    #                               default=Value(False),
-    #                               output_field=BooleanField).values('title', 'assigned_count', 'total', 'deadline', 'duedate')
-
-    assignments_list = models.Assignment.objects.all().annotate(
-        assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = username))
-        ).annotate(total = Count('submission__author')
-        ).annotate( isValid = Case(When(deadline__lt = current_time, then=Value(True)),
-                                    default=Value(False),
-                                    output_field=BooleanField()
-                                        )
-        ).values('title', 'assigned_count', 'total', 'isValid', 'id')
-    
-    # for assignment in assignments_list:
-    #     print(assignment["isValid"])
-    
-    # .annotate(check = Case(When(F('deadline') < timezone.now(), then=Value(False)),
-    #                             default=Value(True))
-    #     )
-    
-    
-    # for assignment in assignments_list:
+    try:    
+        assignments_list = models.Assignment.objects.all().annotate(
+            assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = username)),
+            total = Count('submission__author'),
+            isValid = Case(When(deadline__lt = timezone.now(), then=Value(True)),
+                                default=Value(False),
+                                output_field=BooleanField())
+            ).values('title', 'assigned_count', 'total', 'isValid', 'id')
+    except:
+        raise Http404(f" Please check, grader, author, deadline ")
         
-    #     if assignment["duedate"] < timezone.now():
-    #         assignment["valid"] = False
-    
-    # assignment_list = models.Assignment.objects.all()
-
-
-    
-    # for assignment in assignment_list:
-        
-    #     if assignment.deadline < timezone.now():
-    #         assignment.to_grade = str(UNGRADED COUNT) + " / " + str(GRADED COUNT)
-    
-    
-    # test = models.Assignment.objects.filter(submission__grader__username = username).annotate(gc=Count('submission__grader')).values('title', 'gc')
-    
-    # submissions_count = models.Submission.objects.filter(grader__username = username).values("assignment").annotate(count = Count("assignment"))
-    
     return render(request, 
                   "profile.html",
                   {
@@ -162,20 +124,29 @@ def profile(request):
                       "username": username
                   })
 
-def login_form(request):
-    return render(request, "login.html")
-
 @require_POST
 def grade (request, assignment_id):
 
-    # submission_object = models.Submission.objects.filter(assignment = assignment_id)
 
-    for x in request.POST:
-        if x[:6] == "grade-":
-            submission = models.Submission.objects.get(id = x[6])
-            submission.score = request.POST[x]
-            submission.save()
 
-            print("after update = ", submission.score)
-    
-    return redirect(f"{assignment_id}/grade")
+    if request.method == "POST":
+        try:
+            for x in request.POST:
+                if x[:6] == "grade-":
+                    submission = models.Submission.objects.get(id = x[6])
+                    try:
+                        submission.score = float(request.POST[x])
+                    except ValueError as e:
+                        print(e, "Insert valid floating-point number.")
+                        submission.score = None
+                    submission.full_clean()
+                    submission.save()
+        except ValidationError as e:
+            print(e)
+    try:
+        return redirect(f"/{assignment_id}/submissions")
+    except models.Assignment.DoesNotExist:
+        raise Http404(f"Could not find assignment with id {assignment_id}")
+
+def login_form(request):
+    return render(request, "login.html")

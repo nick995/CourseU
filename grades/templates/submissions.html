@@ -27,31 +27,24 @@
                 </thead>
 
                 {% for submission in submission_info%}
-
                     <tr>
                         <td> {{submission.author_username}} </td>
-                        <td> <a href={{ submission.submit_file}}>Submission</a></td>
+                        <td> <a href={{submission.submit_file}}>Submission</a></td>
                         <td><input type="number" 
                             title="Assignment1 grade" 
                             name= grade-{{submission.user_id}} 
                             value= {{submission.get_score}}> 
                         </td>
                     </tr>
-
                 {% endfor %}
             </table>
 
             <div class="horizonAdj">
                 <div>
-                    <button>Submit</button>
+                    <button type='submit'>Submit</button>
                 </div>
                 <div><a href="/{{assignment_id}}/" title="This link goes assignment">Back to assignment</a></div>
             </div>
-
-            {% comment %} <input type=hidden name=show value={{tvshow.id}}>
-            <input type=hidden name=episode value={{episode.id}}>
-            <button>Downvote</button> {% endcomment %}
-
         </form>
 
 

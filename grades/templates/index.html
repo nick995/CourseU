@@ -17,17 +17,17 @@
         </span>
 
         <div class="actionCard">
-            <p>Currently {{submissions}} / {{total_student}} submission{{total_student | pluralize}} </p>
+            <p>Currently {{submissions}} / {{total_student}} submission{{total_student|pluralize}} </p>
             <p class="horizonline">
-            {{assigned}} submission{{assigned | pluralize }} assigned to you
-            <a href="/{{assignment.id}}/submissions" title="This link goes submission">Grade</a>
+            {{assigned}} submission{{assigned|pluralize}} assigned to you
+            <a href="/{{id}}/submissions" title="This link goes submission">Grade</a>
             </p>
         </div>
     
         <header><p class="bold">Description</p></header>
 
         <p>
-            {{description |safe}}
+            {{description|safe}}
         </p>    
     </div>
 </div>
