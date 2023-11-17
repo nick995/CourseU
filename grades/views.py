@@ -167,5 +167,5 @@ def login_form(request):
 
 def logout_form(request):
     logout(request)
-    return redirect("/profile/login")
+    return redirect("/profile/login/")
     # Redirect to a success page.
