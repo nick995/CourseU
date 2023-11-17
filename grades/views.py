@@ -105,7 +105,7 @@ def submissions(request, assignment_id):
 
 # Phase 5
 def profile(request):
-    username = "ta1"
+    username = request.user
     
     try:    
         assignments_list = models.Assignment.objects.all().annotate(
@@ -154,8 +154,6 @@ def login_form(request):
             username = request.POST.get("username", "")
             password = request.POST["password"]
             
-            print(username)
-            print(password)
             user = authenticate(username=username, password=password)            
             if user is not None:
                 login(request, user)
@@ -165,5 +163,9 @@ def login_form(request):
         except ValidationError as e:
             print(e)
     else:
-        
         return render(request, "login.html")
+
+def logout_view(request):
+    logout(request)
+    return redirect("/profile/login")
+    # Redirect to a success page.
