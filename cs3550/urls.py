@@ -26,6 +26,6 @@ urlpatterns = [
     path("profile/", views.profile),
     path("profile/login/", views.login_form),
     path("<int:assignment_id>/grade", views.grade),
-    path("/profile/logout/", views.logout_form)
+    path("profile/logout/", views.logout_form)
     
 ]
