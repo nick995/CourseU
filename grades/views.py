@@ -5,6 +5,7 @@ from django.http import Http404
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
@@ -126,9 +127,6 @@ def profile(request):
 
 @require_POST
 def grade (request, assignment_id):
-
-
-
     if request.method == "POST":
         try:
             for x in request.POST:
@@ -148,5 +146,24 @@ def grade (request, assignment_id):
     except models.Assignment.DoesNotExist:
         raise Http404(f"Could not find assignment with id {assignment_id}")
 
-def login_form(request):
-    return render(request, "login.html")
+def login_form(request):    
+
+
+    if request.method == "POST":
+        try:
+            username = request.POST.get("username", "")
+            password = request.POST["password"]
+            
+            print(username)
+            print(password)
+            user = authenticate(username=username, password=password)            
+            if user is not None:
+                login(request, user)
+                return redirect("/profile/")
+            else:
+                return render(request, "login.html")
+        except ValidationError as e:
+            print(e)
+    else:
+        
+        return render(request, "login.html")

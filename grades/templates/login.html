@@ -10,7 +10,7 @@
         <p>Log in</p>
       </header>
 
-      <form class="loginForm">
+      <form class="loginForm" method="post" action="/profile/login/">
         <div class="rowContainer">
           <label class="rowBox" for="username">Username:</label>
           <input
@@ -36,7 +36,7 @@
           <button
             class="rowBox"
             name="login"
-            onclick="location.href='profile.html'"
+            onclick="location.href='/profile/'"
             type="button"
           >
             Log in
