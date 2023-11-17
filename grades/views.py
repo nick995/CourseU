@@ -165,7 +165,7 @@ def login_form(request):
     else:
         return render(request, "login.html")
 
-def logout_view(request):
+def logout_form(request):
     logout(request)
     return redirect("/profile/login")
     # Redirect to a success page.
