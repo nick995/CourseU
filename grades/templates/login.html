@@ -10,7 +10,7 @@
         <p>Log in</p>
       </header>
 
-      <form class="loginForm" method="post" action="/profile/login/">
+      <form class="loginForm" action="/profile/login/" method="post">
         {% csrf_token %}
         <div class="rowContainer">
           <label class="rowBox" for="username">Username:</label>
@@ -37,8 +37,7 @@
           <button
             class="rowBox"
             name="login"
-            onclick="location.href='/profile/'"
-            type="button"
+            type="submit"
           >
             Log in
           </button>

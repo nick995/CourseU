@@ -15,7 +15,7 @@
         <span class="marginbottom">
             Due {{deadline | date:"F j"}}, total of {{total_points}} point{{total_points|pluralize}}
         </span>
-
+        {% if view %}
         <div class="actionCard">
             <p>Currently {{submissions}} / {{total_student}} submission{{total_student|pluralize}} </p>
             <p class="horizonline">
@@ -23,6 +23,7 @@
             <a href="/{{id}}/submissions" title="This link goes submission">Grade</a>
             </p>
         </div>
+        {%endif%}
     
         <header><p class="bold">Description</p></header>
 
