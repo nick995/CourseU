@@ -27,6 +27,8 @@
     </div>
 
     <!--All of links should go to -->
+
+    {% if viewpoint == "admin" or viewpoint == "ta" %}
     <table>
       <!-- Starts a table, contains rows -->
       <thead>
@@ -36,20 +38,42 @@
           <th class="alnright">Graded</th>
         </tr>
       </thead>
+    {% for assignment in assignments%}
+        <tr>
+          <td><a href="/{{assignment.id}}/submissions" title="This link goes submission"> {{assignment.title}} </a></td>
 
+          {% if assignment.isValid %}
+            <td class="alnright"> {{ assignment.assigned_count}} / {{assignment.total}} </td>
+          {% else %}
+            <td class="alnright"> Not Due </td>        
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </table>
+
+      {%elif viewpoint == "student"%}
+      <table>
+        <!-- Starts a table, contains rows -->
+        <thead>
+          <tr>
+            <th>Assignment</th>
+            <!-- The header for that column should also be right-aligned. -->
+            <th class="alnright">Score</th>
+          </tr>
+        </thead>
       {% for assignment in assignments%}
-
-      <tr>
-        <td><a href="/{{assignment.id}}/submissions" title="This link goes submission"> {{assignment.title}} </a></td>
-
-        {% if assignment.isValid %}
-          <td class="alnright"> {{ assignment.assigned_count}} / {{assignment.total}} </td>
-        {% else %}
-          <td class="alnright"> Not Due </td>        
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </table>
+          <tr>
+            <td><a href="/{{assignment.id}}/submissions" title="This link goes submission"> {{assignment.title}} </a></td>
+  
+            {% if Due %}
+              <td class="alnright"> {{grade}} </td>
+            {% else %}
+              <td class="alnright"> Not Due </td>        
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </table>
+      {%endif%}
 </div>
 </div>
 

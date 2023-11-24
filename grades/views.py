@@ -30,6 +30,11 @@ def index(request, assignment_id):
         view = True
     try:
         submission_object = models.Submission.objects.filter(assignment = assignment_id)
+
+
+
+
+        
         assignment_object = models.Assignment.objects.get(id = assignment_id)
     except models.User.DoesNotExist:
         raise ValueError(f"This is not valid assignment", assignment_id)
@@ -43,9 +48,17 @@ def index(request, assignment_id):
     # How many total submissions there are to this assignment(assignment_id)
     submission_total = submission_object.count()
 
-    # How many of submissions are assigned to "you" with a name of ta1
+    # # How many of submissions are assigned to "you"
+    # if is_admin(username):
+    #     assigned_assignment = submission_object.count()
+    #     print(submission_object.count())
     assigned_assignment = submission_object.filter(grader = assigned_grader).count()
 
+
+
+
+    
+    print(assigned_assignment)
     # How many total students there are
     try:
         total_student = models.Group.objects.get(name="Students").user_set.count()
@@ -123,22 +136,67 @@ def submissions(request, assignment_id):
 # Phase 5
 def profile(request):
     user = request.user
-    try:    
-        assignments_list = models.Assignment.objects.all().annotate(
-            assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = user)),
+    
+    # assignment = models.Assignment.objects.all().annotate(
+    #     graded = Case()
+    # )
+    
+    try:
+        if is_ta(user):            
+            viewpint = "ta"
+            assignments_list = models.Assignment.objects.all().annotate(
+                assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = user)),
+                
+                total = Count('submission__author'),
+                isValid = Case(When(deadline__lt = timezone.now(), then=Value(True)),
+                                    default=Value(False),
+                                    output_field=BooleanField())
+                ).values('title', 'assigned_count', 'total', 'isValid', 'id')
+        # When viewed by the administrative user, 
+        # it should show the graded and total number of submissions 
+        # (ignoring who grades each submission).
+        elif is_admin(user):
+            viewpoint  = "admin"
+            assignments_list = models.Assignment.objects.all().annotate(
+            assigned_count = Count('submission__author', filter=~Q(submission__score = None)),
             total = Count('submission__author'),
             isValid = Case(When(deadline__lt = timezone.now(), then=Value(True)),
                                 default=Value(False),
                                 output_field=BooleanField())
             ).values('title', 'assigned_count', 'total', 'isValid', 'id')
+        elif is_student(user):
+            viewpoint = "student"
+            # assignments_list = models.Assignment.objects.all().annotate(
+            #                 total = Count('submission__author'),
+            #                 isValid = Case(When(deadline__lt = timezone.now(), then=Value(True)),
+            #                                     default=Value(False),
+            #                                     output_field=BooleanField())
+            #                 ).values('title', 'assigned_count', 'total', 'isValid', 'id')
+            
+            submissions_list = models.Submission.objects.all().filter(author = user)
+            assignments_list = models.Assignment.objects.all()
+            for assignment in assignments_list:                
+                if assignment.deadline < timezone.now():
+                    due = True                        
+                    try:    #due 
+                        assignment_submissions = submissions_list.get(assignment=assignment)
+                        score = assignment.weight * assignment_submissions.score / assignment.points
+                    except: #missing
+                        score = "Missing"
+                else:
+                    #   Not due
+                    due = False
+                    score = "Not Due"
+                print(score)
+            
     except:
         raise Http404(f" Please check, grader, author, deadline ")
-        
     return render(request, 
                   "profile.html",
                   {
                       "assignments": assignments_list,
-                      "username": user
+                      "username": user,
+                      "viewpoint": viewpoint
                   })
 
 @require_POST
@@ -187,8 +245,18 @@ def logout_form(request):
 def is_student(user):
     return user.groups.filter(name="Students").exists()
 
+
+
+
+    
+
 def is_ta(user):
     return user.groups.filter(name="Teaching Assistants").exists()
+
+
+
+
+    
 
 def is_admin(user):
     return user.is_superuser
