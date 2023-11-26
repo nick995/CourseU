@@ -25,11 +25,10 @@
                         <th> Grade </th>
                     </tr>
                 </thead>
-
                 {% for submission in submission_info%}
                     <tr>
                         <td> {{submission.author_username}} </td>
-                        <td> <a href={{submission.submit_file}}>Submission</a></td>
+                        <td> <a href='/uploads/{{submission.submit_file}}'>Submission</a></td>
                         <td><input type="number" 
                             title="Assignment1 grade" 
                             name= grade-{{submission.user_id}} 

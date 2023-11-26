@@ -1,2 +1,0 @@
- if only 1 submission exists the action card should not say that "1/1 submissions".?
- 

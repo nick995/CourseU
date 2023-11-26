@@ -1,16 +1,32 @@
 from django.shortcuts import render, redirect
 from . import models
 from django.db.models import Q, Count, Case, When, Value, BooleanField, F
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from django.http import HttpResponseBadRequest
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
+def is_student(user):
+    return user.groups.filter(name="Students").exists()
+def is_ta(user):
+    return user.groups.filter(name="Teaching Assistants").exists()
+def is_admin(user):
+    return user.is_superuser
+def is_ta_admin(user):
+    if user.groups.filter(name="Teaching Assistants").exists() or user.is_superuser:
+        return True
+    else:
+        return False
+
+@login_required(login_url="/profile/login/")
 def assignments(request):
+    print("assignments")
     try:
         assignments = models.Assignment.objects.all()
     except models.Assignment.DoesNotExist:
@@ -19,25 +35,81 @@ def assignments(request):
                   "assignments.html",
                   dict(assignments=assignments))
 
+@login_required(login_url="/profile/login/") 
 def index(request, assignment_id):
-    
+    print("index")
+
     view = False
     username = request.user    
-    print(username)
-    if is_student(username) or (request.user.is_authenticated == False):
-        view = False
-    elif is_ta(username) or is_admin(username):
-        view = True
     try:
         submission_object = models.Submission.objects.filter(assignment = assignment_id)
-
-
-
-
-        
         assignment_object = models.Assignment.objects.get(id = assignment_id)
     except models.User.DoesNotExist:
         raise ValueError(f"This is not valid assignment", assignment_id)
+    #   for ta and student
+    try:
+        assignment_title = assignment_object.title
+        assignment_point = assignment_object.points
+        assginment_deadline = assignment_object.deadline
+        assignment_description = assignment_object.description
+    except models.Assignment.DoesNotExist:
+        raise Http404(f"Could not find assignment with id {assignment_id}")
+    
+    if is_student(username):
+        student_data = {}
+        view = "student"
+        #   case1.  submitted, grade
+        #   case2.  submitted,ungraded 
+        #   case3.  submitted, not due 
+        #   case4.  not submitted, not due  
+        #   case5.  not submitted, past due  
+        
+        try:
+            print(assignment_id)
+            #   if there's no submission, go to except
+            submission_object = models.Submission.objects.get(assignment = assignment_id, author = username)
+            # print("test = ", submission_object.file)
+            #   case1
+            if submission_object.score is not None:
+                student_data["file"] = submission_object.file
+                student_data["score"] = submission_object.score
+                student_data["point"] = assignment_object.points
+                student_data["case"] = "case1"
+                student_data["earn"] = submission_object.score / assignment_object.points * assignment_object.weight
+            #   case2
+            else:
+                student_data["file"] = submission_object.file
+                #   if past due 
+                if assignment_object.deadline < timezone.now():
+                    student_data["case"] = "case2"
+                else:
+                    student_data["case"] = "case3"
+        except:
+            #   case 5
+            if assignment_object.deadline < timezone.now():
+                student_data["announce"] = "You did not submit this assignment and received 0 points."
+                student_data["case"] = "case5"
+            #   case 4
+            else:
+                student_data["announce"] = "No current submission."
+                student_data["case"] = "case4"
+
+        return render(request,
+                      "index.html",
+                      {
+                        'student_data': student_data,
+                        'view': view,
+                        'assignment_title': assignment_title,
+                        'total_points': assignment_point,
+                        'deadline': assginment_deadline,
+                        'description': assignment_description,
+                        'id': assignment_id,
+
+                      })
+    elif is_ta(username) or is_admin(username):
+        view = "ta_admin"
+    elif (request.user.is_authenticated == False):
+        pass
     
     #   for TA 
     try:
@@ -49,35 +121,17 @@ def index(request, assignment_id):
     submission_total = submission_object.count()
 
     # # How many of submissions are assigned to "you"
-    # if is_admin(username):
-    #     assigned_assignment = submission_object.count()
-    #     print(submission_object.count())
     assigned_assignment = submission_object.filter(grader = assigned_grader).count()
-
-
-
-
-    
-    print(assigned_assignment)
     # How many total students there are
     try:
         total_student = models.Group.objects.get(name="Students").user_set.count()
     except models.Group.DoesNotExist:
         raise ValueError(f"Student group is not found")
-    
-    try:
-        assignment_title = assignment_object.title
-        assignment_point = assignment_object.points
-        assginment_deadline = assignment_object.deadline
-        assignment_description = assignment_object.description
-    except models.Assignment.DoesNotExist:
-        raise Http404(f"Could not find assignment with id {assignment_id}")
-    
     return render(request, 
                  "index.html",
                  {
-                  'total_student': total_student,
                   'submissions': submission_total,
+                  'total_student': total_student,
                   'assigned': assigned_assignment,
                   'assignment_title': assignment_title,
                   'total_points': assignment_point,
@@ -86,9 +140,11 @@ def index(request, assignment_id):
                   'id': assignment_id,
                   'view': view
                   })
-
-def submissions(request, assignment_id):
     
+@user_passes_test(is_ta_admin)
+@login_required(login_url="/profile/login/")
+def submissions(request, assignment_id):
+    print("submissions")
     user = request.user
     #The "Student" column has the submission's author's name
     #The "Submission" link should point to the submission's file.url field. This link won't work, however, until Homework 5.
@@ -124,7 +180,7 @@ def submissions(request, assignment_id):
                                                                 get_score = F('score'),
                                                                 user_id = F('id')
                                                                 ).values("author_username", "submit_file", "get_score", "user_id")
-        print(submission_info)
+
     return render(request, "submissions.html",
                 {
                     'submission_info': submission_info,
@@ -133,17 +189,19 @@ def submissions(request, assignment_id):
                     'assignment_id': assignment_id
                 })
 
-# Phase 5
+@login_required(login_url="/profile/login/")
 def profile(request):
+    print("profile")
+
     user = request.user
     
     # assignment = models.Assignment.objects.all().annotate(
     #     graded = Case()
     # )
-    
     try:
+        
         if is_ta(user):            
-            viewpint = "ta"
+            viewpoint = "ta"
             assignments_list = models.Assignment.objects.all().annotate(
                 assigned_count = Count('submission__grader' , filter=Q(submission__grader__username = user)),
                 
@@ -166,29 +224,57 @@ def profile(request):
             ).values('title', 'assigned_count', 'total', 'isValid', 'id')
         elif is_student(user):
             viewpoint = "student"
-            # assignments_list = models.Assignment.objects.all().annotate(
-            #                 total = Count('submission__author'),
-            #                 isValid = Case(When(deadline__lt = timezone.now(), then=Value(True)),
-            #                                     default=Value(False),
-            #                                     output_field=BooleanField())
-            #                 ).values('title', 'assigned_count', 'total', 'isValid', 'id')
-            
             submissions_list = models.Submission.objects.all().filter(author = user)
             assignments_list = models.Assignment.objects.all()
+            total_avilable = 0
+            total_earn = 0
+            assignment_dic = {}
+            
             for assignment in assignments_list:                
-                if assignment.deadline < timezone.now():
+                
+                
+                if assignment.deadline < timezone.localtime():
+                    # print("assignment title = ", assignment.title, "points = ", assignment.points, "deadline = ", assignment.deadline)
+                    # print(timezone.localtime())
                     due = True                        
                     try:    #due 
+                        
                         assignment_submissions = submissions_list.get(assignment=assignment)
-                        score = assignment.weight * assignment_submissions.score / assignment.points
-                    except: #missing
-                        score = "Missing"
+                        #   for 
+                        total_earn += assignment.weight * assignment_submissions.score / assignment.points
+                        #   for displaying
+                        score = str(assignment_submissions.score / assignment.points * 100) + "%"
+                        #   
+                        total_avilable += assignment.weight
+                    except: 
+                        try:
+                            if submissions_list.get(assignment = assignment).score == None:
+                            #   ungraded
+                                score = "Ungraded"
+                        except:
+                            #   missing
+                            total_avilable += assignment.weight
+                            score = "Missing"
                 else:
                     #   Not due
                     due = False
                     score = "Not Due"
-                print(score)
-            
+                    assignment.points = 0
+                    
+                assignment_dic[assignment.title] = [assignment.pk , score]
+            print(total_earn)
+            print(total_avilable)
+            return render(request, 
+                        "profile.html",
+                        {
+                            "assignments": assignment_dic,
+                            "username": user,
+                            "viewpoint": viewpoint,
+                            "finalgrade": round(total_earn/total_avilable* 100, 1)
+                        })
+                
+                
+
     except:
         raise Http404(f" Please check, grader, author, deadline ")
     return render(request, 
@@ -199,8 +285,12 @@ def profile(request):
                       "viewpoint": viewpoint
                   })
 
+
+@user_passes_test(is_ta_admin)
+@login_required(login_url="/profile/login/")
 @require_POST
 def grade (request, assignment_id):
+    print("grade")
     if request.method == "POST":
         try:
             for x in request.POST:
@@ -221,19 +311,36 @@ def grade (request, assignment_id):
         raise Http404(f"Could not find assignment with id {assignment_id}")
 
 def login_form(request):    
-    print("request = ", request)
     
     if request.method == "POST":
+        print(request.POST['next'])
         try:
             user = authenticate(username=request.POST["username"], password=request.POST["password"])  
             if user is not None:
                 login(request, user)
-                return redirect("/profile/")
+                if 'next' in request.POST:
+                    return redirect(request.POST['next'])
+                else:
+                    return redirect('/profile/')
             else:
-                print("user is none ")
-                return render(request, "login.html")
+                #   loginfail = re render
+                return render(request, "login.html",{
+                    "error": "Username and password do not match"
+                })
         except ValidationError as e:
             print(e)
+    elif request.method == "GET":
+        if 'next' in request.GET:
+            get_next = request.GET["next"]
+            print("get next = ", get_next)
+            #   pass that to the login.html
+            return render(request, "login.html",
+                        {
+                            "next": get_next
+                            }
+                        )
+        else:
+            return redirect("/profile/")
     else:
         return render(request, "login.html")
 
@@ -242,21 +349,56 @@ def logout_form(request):
     # Redirect to a success page.
     return redirect("/profile/login/")
 
-def is_student(user):
-    return user.groups.filter(name="Students").exists()
-
-
-
-
+@user_passes_test(is_student)
+def submit(request, id):
     
-
-def is_ta(user):
-    return user.groups.filter(name="Teaching Assistants").exists()
-
-
-
-
+    assignment_object = models.Assignment.objects.get(id = id)
     
+    #   if it is already past due, return a 400 response.
+    if assignment_object.deadline < timezone.now():
+        # Acts just like HttpResponse but uses a 400 status code.
+        raise ValidationError("Due date is passed")
+    else:
+        if request.FILES.get('file', False):
+            file = request.FILES['file']
+        else:
+            return redirect(f"/{id}/")
+            #   change to new submit
+        try:
+            submission_object = models.Submission.objects.get(assignment = id)
+            submission_object.file = file
+            submission_object.save()
+        except:
+            #   not submitted yet
+            
+            submission_object = models.Submission.objects.create(assignment=assignment_object,
+                                                                 file = file,
+                                                                 author= request.user ,
+                                                                 grader= pick_grader(assignment_object),
+                                                                 score= None)
+            print(submission_object)
+            submission_object.save            
+        return redirect(f"/{id}/")
 
-def is_admin(user):
-    return user.is_superuser
+def pick_grader(Assignment):
+    #   get teaching assistant group -> annotate graded_set as total_assigned -> order by fewest
+    #   get first query
+    assigend_ta = models.Group.objects.get(name="Teaching Assistants").user_set.all().annotate(
+        total_assigned=Count("graded_set")
+    ).order_by("total_assigned")[:1].get()
+    
+    return assigend_ta
+
+def show_upload(request, filename):
+    print(filename)
+    user = request.user
+    submission = models.Submission.objects.get(file = filename)
+    if (submission.author == user) or (submission.grader == user) or (is_admin(user)):
+        pass
+    else:        
+        raise PermissionDenied()
+    with submission.file.open() as fd:
+        response = HttpResponse(fd)
+        response["Content-Disposition"] = \
+            f'attachment; filename="{submission.file.name}"'
+        return response

@@ -19,7 +19,7 @@ class Assignment(models.Model):
     weight = models.IntegerField()
     # integer number of maximum points(which is how much this assignment is graded out of)
     points = models.IntegerField(
-        default=100,
+        default=0,
     )
     # for testing
 class Submission(models.Model):

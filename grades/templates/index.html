@@ -11,19 +11,60 @@
         <header class="pageTitle">
             {{assignment_title| title}}
         </header>
-
         <span class="marginbottom">
             Due {{deadline | date:"F j"}}, total of {{total_points}} point{{total_points|pluralize}}
         </span>
-        {% if view %}
+        {% if view == "ta_admin" %}
+            <div class="actionCard">
+                <p>Currently {{submissions}} / {{total_student}} submission{{total_student|pluralize}} </p>
+                <p class="horizonline">
+                {{assigned}} submission{{assigned|pluralize}} assigned to you
+                <a href="/{{id}}/submissions" title="This link goes submission">Grade</a>
+                </p>
+            </div>
+        
+        {% else%}
+        {% comment %} 
+        #   case1.  submitted, grade
+        #   case2.  submitted,ungraded 
+        #   case3.  submitted, not due 
+        #   case4.  not submitted, not due  
+        #   case5.  not submitted, past due   
+        {% endcomment %}
         <div class="actionCard">
-            <p>Currently {{submissions}} / {{total_student}} submission{{total_student|pluralize}} </p>
-            <p class="horizonline">
-            {{assigned}} submission{{assigned|pluralize}} assigned to you
-            <a href="/{{id}}/submissions" title="This link goes submission">Grade</a>
+            
+            {% if student_data.case == "case1" %}
+            <p>Your submission,<a href='/uploads/{{student_data.file.name}}'>{{student_data.file.name}}</a>, received {{student_data.score}}/{{student_data.point}} point{{student_data.point | pluralize}} ( {{student_data.earn}}%). </p>
+            <p class="horizonline"></p>
+
+            {% elif student_data.case == "case2" %}
+            <p>Your submission,<a href='/uploads/{{student_data.file.name}}'>{{student_data.file.name}}</a>, is being graded</p>
+            <p class="horizonline"></p>
+
+            {% elif student_data.case == "case3" %}
+            <p>Your current submission is <a href='/uploads/{{student_data.file.name}}'>{{student_data.file.name}}</a></p>  
+            <p class="horizonline">      
+            <form method="post" action="/{{id}}/submit/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" />
+                <input type="submit" name="submit" value="Upload" />
+            </form>
             </p>
+            {% elif student_data.case == "case4" %}
+            <p>No current submission.</p>
+            <p class="horizonline">      
+                <form method="post" action="/{{id}}/submit/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="file" />
+                    <input type="submit" name="submit" value="Upload" />
+                </form>
+            </p>
+            {% elif student_data.case == "case5" %}
+            <p>You did not submit this assignment and received 0 points.</p>
+            <p class="horizonline"></p>
+            {% endif %}
         </div>
-        {%endif%}
+        {%endif%} 
     
         <header><p class="bold">Description</p></header>
 

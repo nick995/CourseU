@@ -10,8 +10,12 @@
         <p>Log in</p>
       </header>
 
+      <output class="alnright">{{error}} </output>
+
       <form class="loginForm" action="/profile/login/" method="post">
         {% csrf_token %}
+        <input type="hidden" name="next" value={{next}}>
+
         <div class="rowContainer">
           <label class="rowBox" for="username">Username:</label>
           <input

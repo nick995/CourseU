@@ -61,17 +61,17 @@
             <th class="alnright">Score</th>
           </tr>
         </thead>
-      {% for assignment in assignments%}
+      {% for assignment in assignments.items %}
           <tr>
-            <td><a href="/{{assignment.id}}/submissions" title="This link goes submission"> {{assignment.title}} </a></td>
-  
-            {% if Due %}
-              <td class="alnright"> {{grade}} </td>
-            {% else %}
-              <td class="alnright"> Not Due </td>        
-            {% endif %}
+            <td><a href="/{{assignment.1.0}}/submissions" title="This link goes submission"> {{assignment.0}} </a></td>
+              <td class="alnright"> {{assignment.1.1}} </td>
           </tr>
-          {% endfor %}
+      {% endfor %}
+          <tr>
+            <th>Final grade</th>
+            <!-- The header for that column should also be right-aligned. -->
+            <th class="alnright">{{finalgrade}}%</th>
+          </tr>
         </table>
       {%endif%}
 </div>

@@ -163,3 +163,6 @@ Make table columns that contain numbers right-aligned. */
     flex-basis: 50%;
     align-content: center;
 }
+output {
+    color: red;
+}
