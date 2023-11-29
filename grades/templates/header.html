@@ -2,9 +2,18 @@
 <meta charset="utf-8" />
 <html lang="en">
 
-<link rel="stylesheet" type="text/css" href="/grades/templates/main.css" />
 
-  <head>
+<script type=module>
+  import { say_hi } from "/static/main.js";
+  say_hi()
+</script>
+
+{% comment %} <link rel="stylesheet" type="text/css" href="/grades/templates/main.css" />
+ {% endcomment %}
+
+ <link rel="stylesheet" type="text/css" href="/static/main.css" />
+
+ <head>
     <title>{{title}} - CS 3550</title>
     <link rel="icon" href="/static/favicon.ico" type="image/icon type" />
   </head>
@@ -22,4 +31,5 @@
       </div>
     </div>
   </header>
+
 </html>
