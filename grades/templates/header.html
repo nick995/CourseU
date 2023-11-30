@@ -3,10 +3,12 @@
 <html lang="en">
 
 
-<script type=module>
+{% comment %} <script type=module>
   import { say_hi } from "/static/main.js";
   say_hi()
-</script>
+</script> {% endcomment %}
+
+<script type="module" src="/static/main.js"></script>
 
 {% comment %} <link rel="stylesheet" type="text/css" href="/grades/templates/main.css" />
  {% endcomment %}
