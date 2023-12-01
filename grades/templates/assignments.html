@@ -1,56 +1,49 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
 <html lang="en">
-
-{% include "header.html" with title="Assignments" %}
-
+<head>
+    <meta charset="utf-8" />
+    <title>Assignments</title>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include main.js -->
+    <script type="module" src="/static/main.js"></script>
+    {% include "header.html" with title="Assignments" %}
+</head>
+<body>
     <div class="maincontents">
         <div class="maincontentsStyle">    
+            <header class="pageTitle">
+                All assignments
+            </header>
 
-        <header class="pageTitle">
-            All assignments
-        </header>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Due date</th>
+                        <th class="alnright">Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td><a href="/{{assignment.id}}/">{{assignment.title}}</a></td>
+                        <td>{{assignment.deadline | date:"M j"}}</td>
+                        <td class="alnright">{{assignment.weight}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <table class="table">
-      <!-- Starts a table, contains rows -->
-      <thead>
-        <!-- identifies table header rows -->
-        <tr>
-          <!-- starts a row, contains cells -->
-          <th>Assignment</th>
-          <th>Due date</th>
-          <th class="alnright">Weight</th>
-        </tr>
-      </thead>
-      <!--Loop statements-->
-      {% for assignment in assignments %}
-      <tr>
-        <!-- <td>{{assignment.title}}</td> -->
-        <td><a href="/{{assignment.id}}/">{{assignment.title}}</a></td>
-        <td>{{assignment.deadline | date:"M j"}}</td>
-        <td class="alnright">{{assignment.weight}}</td>
-      </tr>
-      {% endfor %}
-    </table>
-</div>
-
-{% comment %} <script>
-  $(document).ready(function() {
-      // Assuming you have a table element with the class 'table' in your HTML
-      var $table = $('table');
-      make_table_sortable($table);
-  });
-</script> {% endcomment %}
-<script type="module" src="/static/main.js"></script>
-
-<script>
-  $( "table" ).on( "click", function() {
-
-    let $tb = $(this)
-
-    document.write($tb)
-
-  } );
-  </script>
-
-  </html>
+    <script>
+        $(document).ready(function() {
+            $("th").on("click", function(e) {
+                let $th = $(e.target);
+                console.log($th);
+            });
+        });
+    </script>
+</body>
+</html>

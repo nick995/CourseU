@@ -11,7 +11,7 @@ export function say_hi(elt) {
 }
 
 export function make_table_sortable($table) {
-
+    
 }
 
 
