@@ -11,9 +11,7 @@ export function say_hi(elt) {
 }
 
 export function make_table_sortable($table) {
-    $table.find('th:last-child').on('click', function() {
-        console.log('Sorting functionality for the last header cell');
-    });
+
 }
 
 

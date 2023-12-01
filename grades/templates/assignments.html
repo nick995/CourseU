@@ -34,12 +34,23 @@
     </table>
 </div>
 
-<script>
+{% comment %} <script>
   $(document).ready(function() {
       // Assuming you have a table element with the class 'table' in your HTML
-      var $table = $('.table');
+      var $table = $('table');
       make_table_sortable($table);
   });
-</script>
+</script> {% endcomment %}
+<script type="module" src="/static/main.js"></script>
+
+<script>
+  $( "table" ).on( "click", function() {
+
+    let $tb = $(this)
+
+    document.write($tb)
+
+  } );
+  </script>
 
   </html>
