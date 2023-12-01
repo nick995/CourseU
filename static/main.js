@@ -10,4 +10,11 @@ export function say_hi(elt) {
     console.log("Say hi to", elt);
 }
 
+export function make_table_sortable($table) {
+    $table.find('th:last-child').on('click', function() {
+        console.log('Sorting functionality for the last header cell');
+    });
+}
+
+
 say_hi($("h1"));

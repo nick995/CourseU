@@ -313,14 +313,15 @@ def grade (request, assignment_id):
 def login_form(request):    
     
     if request.method == "POST":
-        print(request.POST['next'])
         try:
             user = authenticate(username=request.POST["username"], password=request.POST["password"])  
             if user is not None:
                 login(request, user)
-                if 'next' in request.POST:
+                
+                if request.POST['next'] == None:
                     return redirect(request.POST['next'])
                 else:
+                    print("test test")
                     return redirect('/profile/')
             else:
                 #   loginfail = re render
