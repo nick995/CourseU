@@ -35,7 +35,8 @@
         <tr>
           <th>Assignment</th>
           <!-- The header for that column should also be right-aligned. -->
-          <th class="alnright">Graded</th>
+          <!-- add sortable class to score-->
+          <th class="alnright sortable">Graded</th>
         </tr>
       </thead>
     {% for assignment in assignments%}
@@ -43,9 +44,9 @@
           <td><a href="/{{assignment.id}}/submissions" title="This link goes submission"> {{assignment.title}} </a></td>
 
           {% if assignment.isValid %}
-            <td class="alnright"> {{ assignment.assigned_count}} / {{assignment.total}} </td>
+            <td data-value = "{{assignment.assigned_count }} / {{assignment.total}}" class="alnright"> {{ assignment.assigned_count}} / {{assignment.total}} </td>
           {% else %}
-            <td class="alnright"> Not Due </td>        
+            <td class="alnright" data-value = -1> Not Due </td>        
           {% endif %}
         </tr>
         {% endfor %}
@@ -58,22 +59,34 @@
           <tr>
             <th>Assignment</th>
             <!-- The header for that column should also be right-aligned. -->
-            <th class="alnright">Score</th>
+            <!-- add sortable class to score-->
+            <th class="alnright sortable">Score</th>
           </tr>
         </thead>
       {% for assignment in assignments.items %}
           <tr>
-            <td><a href="/{{assignment.1.0}}/submissions" title="This link goes submission"> {{assignment.0}} </a></td>
-              <td class="alnright"> {{assignment.1.1}} </td>
+            <td data-weight = {{assignment.1.2}}><a href="/{{assignment.1.0}}/submissions" title="This link goes submission"> {{assignment.0}} </a></td>
+            <td class="alnright profile" data-value = {{assignment.1.1}} data-weight = {{assignment.1.2}} > {{assignment.1.1}} </td>
           </tr>
       {% endfor %}
+      <tfoot>
           <tr>
-            <th>Final grade</th>
+            <th data-origin = {{finalgrade}}>Final grade</th>
             <!-- The header for that column should also be right-aligned. -->
             <th class="alnright">{{finalgrade}}%</th>
           </tr>
+        </tfoot>
         </table>
       {%endif%}
+      <script type="module">
+        import { make_table_sortable } from "/static/main.js";
+        import { make_grade_hypothesized } from "/static/main.js";
+        {% comment %} import { compute } from "/static/main.js"; {% endcomment %}
+
+        make_table_sortable($("table"))
+        make_grade_hypothesized($("table"))
+        {% comment %} compute($("table")) {% endcomment %}
+    </script>
 </div>
 </div>
 

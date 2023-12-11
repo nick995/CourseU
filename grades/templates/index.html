@@ -32,22 +32,19 @@
         #   case5.  not submitted, past due   
         {% endcomment %}
         <div class="actionCard">
-            
             {% if student_data.case == "case1" %}
             <p>Your submission,<a href='/uploads/{{student_data.file.name}}'>{{student_data.file.name}}</a>, received {{student_data.score}}/{{student_data.point}} point{{student_data.point | pluralize}} ( {{student_data.earn}}%). </p>
             <p class="horizonline"></p>
-
             {% elif student_data.case == "case2" %}
             <p>Your submission,<a href='/uploads/{{student_data.file.name}}'>{{student_data.file.name}}</a>, is being graded</p>
             <p class="horizonline"></p>
-
             {% elif student_data.case == "case3" %}
             <p>Your current submission is <a href='/uploads/{{student_data.file.name}}'>{{student_data.file.name}}</a></p>  
             <p class="horizonline">      
             <form method="post" action="/{{id}}/submit/" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="file" name="file" />
-                <input type="submit" name="submit" value="Upload" />
+                <input type="submit" name="submit" value="Upload"/>
             </form>
             </p>
             {% elif student_data.case == "case4" %}
@@ -55,7 +52,7 @@
             <p class="horizonline">      
                 <form method="post" action="/{{id}}/submit/" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="file" name="file" />
+                    <input type="file" name="file"/>
                     <input type="submit" name="submit" value="Upload" />
                 </form>
             </p>
@@ -71,6 +68,12 @@
         <p>
             {{description|safe}}
         </p>    
+
+        <script type="module">
+            import { make_form_async } from "/static/main.js";
+            make_form_async($("form"))
+        </script>
+
     </div>
 </div>
 

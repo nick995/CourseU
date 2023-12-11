@@ -232,10 +232,7 @@ def profile(request):
             
             for assignment in assignments_list:                
                 
-                
                 if assignment.deadline < timezone.localtime():
-                    # print("assignment title = ", assignment.title, "points = ", assignment.points, "deadline = ", assignment.deadline)
-                    # print(timezone.localtime())
                     due = True                        
                     try:    #due 
                         
@@ -261,7 +258,7 @@ def profile(request):
                     score = "Not Due"
                     assignment.points = 0
                     
-                assignment_dic[assignment.title] = [assignment.pk , score]
+                assignment_dic[assignment.title] = [assignment.pk , score, assignment.weight]
             print(total_earn)
             print(total_avilable)
             return render(request, 

@@ -166,3 +166,7 @@ Make table columns that contain numbers right-aligned. */
 output {
     color: red;
 }
+
+th.sortable {cursor: pointer; }
+th.sort-asc::after { content: " \25b2;"}
+th.sort-desc::after { content: " \25bc;" }
