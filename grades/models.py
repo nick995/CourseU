@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.core.validators import ValidationError
 
 # Create your models here.
-
+# temp
 def valid_float(num):
     if not isinstance(num, float):
         raise ValueError("Only float number")
