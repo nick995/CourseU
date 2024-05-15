@@ -1,7 +1,7 @@
 import datetime
 
 import os, django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cs3550.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings")
 django.setup()
 
 from django.core.files.base import ContentFile
